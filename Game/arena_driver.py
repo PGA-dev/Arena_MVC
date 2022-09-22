@@ -2,6 +2,7 @@
 '''name, arena_level, damage, hp, to_hit, strength, ac'''
 
 
+from Game.game_pkg.arena_method import battle_cycle
 from game_pkg.c_r_u_d import DB_name, connect_to_db, connect, create_table,select_all, select_char, tuple_convert, update_char, insert_char, insert_chars, IntegrityError
 from game_pkg import exceptions as mvc_exc
 from game_pkg import arena_method as a_h_m
@@ -39,6 +40,8 @@ def main():
     insert_char(conn, 'DeathLaser', ac=7, damage=50, hp=175,to_hit=30, table_name='chars')
     print(select_char(conn, 'Brute', table_name='chars'))
     print(select_all(conn, table_name='chars'))
+
+battle = battle_cycle(select_char('Brute'), select_char('Inside'))
     # character1 = Game_Controller(ModelSQLite(opponents), Game_View())
     # character2 = Game_Controller(ModelSQLite(opponents), Game_View())
     # #monster1 = Controller(ModelBasic(my_items2), View())
