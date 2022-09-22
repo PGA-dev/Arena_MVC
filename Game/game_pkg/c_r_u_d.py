@@ -11,7 +11,7 @@ from sqlite3 import OperationalError, IntegrityError, ProgrammingError
 '''
 Basic SQLite3 connectors
 '''
-DB_name = 'myDB'
+DB_name = 'GameDB'
 
 
 def connect_to_db(db=None):
