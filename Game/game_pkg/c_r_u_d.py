@@ -104,6 +104,35 @@ def create_table(conn, table_name):
         print(e)
 
 
+
+@connect
+def create_char(conn, name, ac, damage, hp, to_hit, table_name):
+    table_name = scrub(table_name)
+    sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?)"\
+        .format(table_name)
+    try:
+        conn.execute(sql, (name, ac, damage, hp, to_hit,))
+        conn.commit()
+    except IntegrityError as e:
+        raise mvc_exc.CharAlreadyStored(
+            '{}: "{}" already stored in table "{}"'.format(e, name, table_name))
+
+
+@connect
+def create_chars(conn, chars, table_name):
+    table_name = scrub(table_name)
+    sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?)"\
+        .format(table_name)
+    entries = list()
+    for x in chars:
+        entries.append((x['name'], x['ac'], x['damage'], x['hp'], x['to_hit']))
+    try:
+        conn.executemany(sql, entries)
+        conn.commit()
+    except IntegrityError as e:
+        print('{}: at least one in {} was already stored in table "{}"'
+              .format(e, [x['name'] for x in chars], table_name))
+
 '''Old DB approach'''
 
 # global Martial Arts opponents list, for creating, updating, etc...
