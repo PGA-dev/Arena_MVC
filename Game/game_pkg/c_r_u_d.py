@@ -8,6 +8,9 @@ from game_pkg import exceptions as mvc_exc
 import sqlite3
 from sqlite3 import OperationalError, IntegrityError, ProgrammingError
 
+'''
+Basic SQLite3 connectors
+'''
 DB_name = 'myDB'
 
 
@@ -80,6 +83,9 @@ def disconnect_from_db(db=None, conn=None):
     if conn is not None:
         conn.close()
 
+'''
+SQL Injection scrubber
+'''
 def scrub(input_string):
     """Clean an input string (to prevent SQL injection).
 
@@ -106,7 +112,7 @@ def create_table(conn, table_name):
 
 
 @connect
-def create_char(conn, name, ac, damage, hp, to_hit, table_name):
+def insert_char(conn, name, ac, damage, hp, to_hit, table_name):
     table_name = scrub(table_name)
     sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?)"\
         .format(table_name)
@@ -119,7 +125,7 @@ def create_char(conn, name, ac, damage, hp, to_hit, table_name):
 
 
 @connect
-def create_chars(conn, chars, table_name):
+def insert_chars(conn, chars, table_name):
     table_name = scrub(table_name)
     sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?)"\
         .format(table_name)
@@ -132,6 +138,89 @@ def create_chars(conn, chars, table_name):
     except IntegrityError as e:
         print('{}: at least one in {} was already stored in table "{}"'
               .format(e, [x['name'] for x in chars], table_name))
+
+
+'''
+converter
+'''
+def tuple_convert(attribute_tuple):
+    att_dict = dict()
+    att_dict['id'] = attribute_tuple[0]
+    att_dict['name'] = attribute_tuple[1]
+    att_dict['ac'] = attribute_tuple[2]
+    att_dict['damage'] = attribute_tuple[3]
+    att_dict['hp'] = attribute_tuple[4]
+    att_dict['to_hit'] = attribute_tuple[5]
+    return att_dict
+
+
+'''
+Select Statements
+'''
+@connect
+def select_char(conn, char_name, table_name):
+    table_name = scrub(table_name)
+    char_name = scrub(char_name)
+    sql = 'SELECT * FROM {} WHERE name="{}"'.format(table_name, char_name)
+    c = conn.execute(sql)
+    result = c.fetchone()
+    if result is not None:
+        return tuple_convert(result)
+    else:
+        raise mvc_exc.CharNotStored(
+            'Can\'t read "{}" because it\'s not stored in table "{}"'
+            .format(char_name, table_name))
+
+
+@connect
+def select_all(conn, table_name):
+    table_name = scrub(table_name)
+    sql = 'SELECT * FROM {}'.format(table_name)
+    c = conn.execute(sql)
+    results = c.fetchall()
+    return list(map(lambda x: tuple_convert(x), results))
+
+'''
+Update Character functionality
+'''
+@connect
+def update_char(conn, name, ac, damage, hp, to_hit, table_name):
+    table_name = scrub(table_name)
+    sql_check = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1)'\
+        .format(table_name)
+    sql_update = 'UPDATE {} SET price=?, quantity=? WHERE name=?'\
+        .format(table_name)
+    c = conn.execute(sql_check, (name,))  # we need the comma
+    result = c.fetchone()
+    if result[0]:
+        c.execute(sql_update, ( ac, damage, hp, to_hit, name))
+        conn.commit()
+    else:
+        raise mvc_exc.CharNotStored(
+            'Can\'t update "{}" because it\'s not stored in table "{}"'
+            .format(name, table_name))
+
+'''
+Delete Character Functionality
+'''
+@connect
+def delete_one(conn, name, table_name):
+    table_name = scrub(table_name)
+    sql_check = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1)'\
+        .format(table_name)
+    table_name = scrub(table_name)
+    sql_delete = 'DELETE FROM {} WHERE name=?'.format(table_name)
+    c = conn.execute(sql_check, (name,))  # we need the comma
+    result = c.fetchone()
+    if result[0]:
+        c.execute(sql_delete, (name,))  # we need the comma
+        conn.commit()
+    else:
+        raise mvc_exc.CharNotStored(
+            'Can\'t delete "{}" because it\'s not stored in table "{}"'
+            .format(name, table_name))
+
+
 
 '''Old DB approach'''
 
