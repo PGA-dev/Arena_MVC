@@ -14,6 +14,7 @@ def arena(self):
 def char_num(character_list):
     return random.randint(0,len(character_list))
 
+
 def battle_cycle(character_list: List):
     _character1 = character_list[char_num]
 

@@ -40,8 +40,10 @@ def main():
     insert_char(conn, 'DeathLaser', ac=7, damage=50, hp=175,to_hit=30, table_name='chars')
     print(select_char(conn, 'Brute', table_name='chars'))
     print(select_all(conn, table_name='chars'))
+    opponent1 = select_char(conn, 'Brute', table_name='chars')
+    opponent2 = select_char(conn, 'Inside', table_name='chars')
 
-battle = battle_cycle(select_char('Brute'), select_char('Inside'))
+    battle = battle_cycle(opponent1, opponent2 )
     # character1 = Game_Controller(ModelSQLite(opponents), Game_View())
     # character2 = Game_Controller(ModelSQLite(opponents), Game_View())
     # #monster1 = Controller(ModelBasic(my_items2), View())
