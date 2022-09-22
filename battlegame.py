@@ -24,13 +24,13 @@ while True:
     damage_dragon = 50
 # user input
     while True:
-        print("1)" + class_wizard)
-        print("2)" + class_elf)
-        print("3)" + class_human)
-        print("4)" + class_cleric)
-        print("5)" + exit_game)
+        print(f"1) {class_wizard}")
+        print(f"2) {class_elf}")
+        print(f"3) {class_human}")
+        print(f"4) {class_cleric}")
+        print(f"5) {exit_game}")
 # local assignment to my_variables
-        char = input("Choose your Character: ")
+        char = input(f"Choose your Character: ")
         character = char.lower()
         if character == "1" or character == "wizard":
             my_class = class_wizard
@@ -53,39 +53,38 @@ while True:
             my_dam = damage_cleric
             break
         elif character == "5" or character == "Exit Game" or character == "quit" or character == "Exit":
-            print("Exit Game")
+            print(f"Exit Game")
             exit()
         else:
-            print("Unknown Character")
+            print(f"Unknown Character")
             continue
-    print("")
-    print("You chose: " + my_class + "\n" "Health: " +
-          str(my_hp) + "\n" + "Damage: " + str(my_dam))
-    print("")
+    print(f"")
+    print(f"You chose: {my_class} \n Health: {str(my_hp)}  \n Damage: {str(my_dam)}")
+    print(f"")
 # battle
     while True:
-        print(my_class + " damages the " + class_dragon)
+        print(f"{my_class} damages the {class_dragon}")
         hp_dragon = hp_dragon - my_dam
         if hp_dragon <= 0:
-            print(class_dragon + " dies and loses the battle!")
+            print(f"{class_dragon} dies and loses the battle!")
             break
         else:
-            print(class_dragon + " hp are: " + str(hp_dragon) + " now.")
+            print(f"{class_dragon} hp are: {str(hp_dragon)} now.")
             print("")
-        print(class_dragon + " damages the " + my_class)
+        print(f"{class_dragon} damages the {my_class}")
         my_hp = my_hp - damage_dragon
         if my_hp <= 0:
-            print(my_class + " dies and loses the battle!")
+            print(f"{my_class} dies and loses the battle!")
             break
         else:
-            print(my_class + " hp is now: " + str(my_hp))
-            print("")
+            print(f"{my_class} hp is now: {str(my_hp)}")
+            print(f"")
             continue
 # restart
-    restar = input("Play again? y/n ")
+    restar = input(f"Play again? y/n ")
     restart = restar.lower()
     if restart == 'y' or restart == "yes":
         continue
     else:
-        print("Goodbye")
+        print(f"Goodbye")
         exit()
