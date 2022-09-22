@@ -1,10 +1,12 @@
 '''CRUD
-    --used by model to interact with data *list of dictionaries in this case
+    --SQLite3 currently used
+    --Upgrade to SQLAlchemy and Dataset a future param
+    --used by model to interact with data *list of dictionaries in the old model
 '''
 
 from game_pkg import exceptions as mvc_exc
-
 import sqlite3
+from sqlite3 import OperationalError, IntegrityError, ProgrammingError
 
 DB_name = 'myDB'
 
@@ -39,8 +41,70 @@ def connect_to_db(db=None):
 
 
 
+# TODO: use this decorator to wrap commit/rollback in a try/except block ?
+# see http://www.kylev.com/2009/05/22/python-decorators-and-database-idioms/
 
-'''backend list'''
+# DB Connect @wrapper
+def connect(func):
+    """Decorator to (re)open a sqlite database connection when needed.
+
+    A database connection must be open when we want to perform a database query
+    but we are in one of the following situations:
+    1) there is no connection
+    2) the connection is closed
+
+    Parameters
+    ----------
+    func : function
+        function which performs the database query
+
+    Returns
+    -------
+    inner func : function
+    """
+    def inner_func(conn, *args, **kwargs):
+        try:
+            # I don't know if this is the simplest and fastest query to try
+            conn.execute(
+                'SELECT name FROM sqlite_temp_master WHERE type="table";')
+        except (AttributeError, ProgrammingError):
+            conn = connect_to_db(DB_name)
+        return func(conn, *args, **kwargs)
+    return inner_func
+
+
+# Disconnect @wrapper
+def disconnect_from_db(db=None, conn=None):
+    if db is not DB_name:
+        print("You are trying to disconnect from a wrong DB")
+    if conn is not None:
+        conn.close()
+
+def scrub(input_string):
+    """Clean an input string (to prevent SQL injection).
+
+    Parameters
+    ----------
+    input_string : str
+
+    Returns
+    -------
+    str
+    """
+    return ''.join(k for k in input_string if k.isalnum())
+
+@connect
+def create_table(conn, table_name):
+    table_name = scrub(table_name)
+    sql = 'CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT,' \
+          'name TEXT UNIQUE, price REAL, quantity INTEGER)'.format(table_name)
+    try:
+        conn.execute(sql)
+    except OperationalError as e:
+        print(e)
+
+
+'''Old DB approach'''
 
 # global Martial Arts opponents list, for creating, updating, etc...
 # opponent_list = list()

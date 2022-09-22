@@ -6,7 +6,7 @@ from game_pkg import c_r_u_d
 from game_pkg import exceptions as mvc_exc
 from game_pkg import arena_method as a_h_m
 from game_pkg.game_controller import Game_Controller 
-from game_pkg.game_model import Character_Model
+from game_pkg.game_model import ModelSQLite
 from game_pkg.game_view import Game_View
 
 
@@ -27,8 +27,8 @@ def main():
                        {"name": "Feet", "ac": 5, "damage": 60, "hp": 120, "to_hit": 25}]
 
 
-    character1 = Game_Controller(Character_Model(opponents), Game_View())
-    character2 = Game_Controller(Character_Model(opponents), Game_View())
+    character1 = Game_Controller(ModelSQLite(opponents), Game_View())
+    character2 = Game_Controller(ModelSQLite(opponents), Game_View())
     #monster1 = Controller(ModelBasic(my_items2), View())
     character2.show_char("Brute")
     character1.show_chars()
