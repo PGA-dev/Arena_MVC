@@ -103,7 +103,7 @@ def scrub(input_string):
 def create_table(conn, table_name):
     table_name = scrub(table_name)
     sql = 'CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT,' \
-          'name TEXT UNIQUE, price REAL, quantity INTEGER)'.format(table_name)
+          'name TEXT UNIQUE, ac INTEGER, damage INTEGER, hp INTEGER, to_hit REAL)'.format(table_name)
     try:
         conn.execute(sql)
     except OperationalError as e:
@@ -114,7 +114,7 @@ def create_table(conn, table_name):
 @connect
 def insert_char(conn, name, ac, damage, hp, to_hit, table_name):
     table_name = scrub(table_name)
-    sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?)"\
+    sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?, ?, ?)"\
         .format(table_name)
     try:
         conn.execute(sql, (name, ac, damage, hp, to_hit,))
@@ -127,7 +127,7 @@ def insert_char(conn, name, ac, damage, hp, to_hit, table_name):
 @connect
 def insert_chars(conn, chars, table_name):
     table_name = scrub(table_name)
-    sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?)"\
+    sql = "INSERT INTO {} ('name', 'ac', 'damage', 'hp', 'to_hit') VALUES (?, ?, ?, ?, ?)"\
         .format(table_name)
     entries = list()
     for x in chars:
@@ -204,7 +204,7 @@ def update_char(conn, name, ac, damage, hp, to_hit, table_name):
 Delete Character Functionality
 '''
 @connect
-def delete_one(conn, name, table_name):
+def delete_char(conn, name, table_name):
     table_name = scrub(table_name)
     sql_check = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1)'\
         .format(table_name)
