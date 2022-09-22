@@ -14,7 +14,7 @@ This project began as a merging of two simple ideas:
 * SQLite3 (PostGreSQL eventually)
 
 #### Files included/ Separation of Concerns:
-1. Original Battlegame.py from NuCamp's week1 python classes
+1. Original Battlegame.py from NuCamp's week1 python classes (for README reference ease)
 2. This README
 3. The Arena game's driver code
 4. dunder init file (my favorite)
