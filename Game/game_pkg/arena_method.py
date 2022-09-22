@@ -22,7 +22,6 @@ def battle_cycle(character_list: List):
     # _player and _opponent hp must be further defined, currently are only defining the participating accounts
     _character1_hp = character_list[0:'hp']
     _character2_hp = character_list[0:'hp']
-    _opponent_hp: bool = _opponents_list['arena_level'] == arena_level and _opponents_list['name'] != "player1"
     _hp_not_null: bool = (_character1_hp and _character2_hp)
     while _hp_not_null:
         if _character1_hp == False:
