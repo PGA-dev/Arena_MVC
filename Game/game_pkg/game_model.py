@@ -20,7 +20,7 @@ class ModelSQLite(object):
         return self._char_type
 
     @char_type.setter
-    def item_type(self, new_char_type):
+    def char_type(self, new_char_type):
         self._char_type = new_char_type
 
     def create_char(self, name, ac, damage, hp, to_hit):

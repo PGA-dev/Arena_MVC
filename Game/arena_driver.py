@@ -2,7 +2,7 @@
 '''name, arena_level, damage, hp, to_hit, strength, ac'''
 
 
-from Game.game_pkg.arena_method import battle_cycle
+from game_pkg.arena_method import battle_cycle
 from game_pkg.c_r_u_d import DB_name, connect_to_db, connect, create_table,select_all, select_char, tuple_convert, update_char, insert_char, insert_chars, IntegrityError
 from game_pkg import exceptions as mvc_exc
 from game_pkg import arena_method as a_h_m
@@ -32,13 +32,17 @@ def main():
     Data
     '''
     # Main Data List of Characters for driver 
-    opponents: list = [{"name": "Brute", "ac": 3, "damage": 75, "hp": 200, "to_hit": 15},
+    opponent1: list = [{"name": "Brute", "ac": 3, "damage": 75, "hp": 200, "to_hit": 15},
                        {"name": "Inside", "ac": 8, "damage": 45, "hp": 100, "to_hit": 65},
                        {"name": "Dodge", "ac": 15, "damage": 35, "hp": 75, "to_hit": 75},
                        {"name": "Right_Hook", "ac": 7, "damage": 50, "hp": 100, "to_hit": 35},
                        {"name": "Feet", "ac": 5, "damage": 60, "hp": 120, "to_hit": 25}]
-    insert_chars(conn, opponents, table_name='chars')
-
+    #insert_chars(conn, opponents, table_name='chars')
+    opponent2: list = [{"name": "Far_cry", "ac": 3, "damage": 75, "hp": 200, "to_hit": 15},
+                       {"name": "Outside", "ac": 8, "damage": 45, "hp": 100, "to_hit": 65},
+                       {"name": "Smackdown", "ac": 15, "damage": 35, "hp": 75, "to_hit": 75},
+                       {"name": "Lefty", "ac": 7, "damage": 50, "hp": 100, "to_hit": 35},
+                       {"name": "Hands", "ac": 5, "damage": 60, "hp": 120, "to_hit": 25}]
 
     '''
     Practice area
@@ -50,10 +54,12 @@ def main():
     '''
     Game Driver Code
     '''
-    opponent1 = select_char(conn, 'Brute', table_name='chars')
-    opponent2 = select_char(conn, 'Inside', table_name='chars')
+    opponent1 = Game_Controller(ModelSQLite(opponent1), Game_View())
+    opponent1.show_chars()
+    #opponent2 = Game_Controller(ModelSQLite(opponent2), Game_View())
+    opponent1.show_char('Brute')
 
-    battle = battle_cycle(opponent1, opponent2 )
+    #battle = battle_cycle(opponent1, opponent2 )
 
 
 

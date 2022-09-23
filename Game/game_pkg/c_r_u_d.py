@@ -121,7 +121,7 @@ def insert_char(conn, name, ac, damage, hp, to_hit, table_name):
         conn.commit()
     except IntegrityError as e:
         raise mvc_exc.CharAlreadyStored(
-            '{}: "{}" already stored in table "{}"'.format(e, name, table_name))
+            f'{e}: {name} already stored in table {table_name}')
 
 
 @connect
