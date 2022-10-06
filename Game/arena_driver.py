@@ -36,9 +36,8 @@ def main():
                        {"name": "Inside", "ac": 8, "damage": 45, "hp": 100, "to_hit": 65},
                        {"name": "Dodge", "ac": 15, "damage": 35, "hp": 75, "to_hit": 75},
                        {"name": "Right_Hook", "ac": 7, "damage": 50, "hp": 100, "to_hit": 35},
-                       {"name": "Feet", "ac": 5, "damage": 60, "hp": 120, "to_hit": 25}]
-    #insert_chars(conn, opponents, table_name='chars')
-    opponent2: list = [{"name": "Far_cry", "ac": 3, "damage": 75, "hp": 200, "to_hit": 15},
+                       {"name": "Feet", "ac": 5, "damage": 60, "hp": 120, "to_hit": 25},
+                       {"name": "Far_cry", "ac": 3, "damage": 75, "hp": 200, "to_hit": 15},
                        {"name": "Outside", "ac": 8, "damage": 45, "hp": 100, "to_hit": 65},
                        {"name": "Smackdown", "ac": 15, "damage": 35, "hp": 75, "to_hit": 75},
                        {"name": "Lefty", "ac": 7, "damage": 50, "hp": 100, "to_hit": 35},
