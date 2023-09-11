@@ -1,4 +1,4 @@
-# PGA First Week Workshop Assignment
+# PGA First Week Workshop Assignment just an example of what the game will be, but with much more depth
 while True:
     # variable assignments
     exit_game = "Exit Game"

@@ -2,8 +2,8 @@
     ---uses model and view
 '''
 
-from game_pkg import game_model
-from game_pkg import game_view
+# from game_pkg import game_model
+# from game_pkg import game_view
 from game_pkg import exceptions as mvc_exc
 
 
